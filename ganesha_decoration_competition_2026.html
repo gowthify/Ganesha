@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ganesha Decoration Competition 2026</title>
+    <!-- Tailwind CSS for rapid styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Poppins for headings, Lora for traditional feel -->
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Animate.css for entrance animations -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+    <!-- Custom CSS for theme colors, background effects, and specific animations -->
+    <style>
+        :root {
+            --primary-orange: #ff7e00;
+            --deep-maroon: #800000;
+            --gold: #FFD700;
+            --bg-cream: #fffdd0;
+            --text-dark: #333;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-cream);
+            color: var(--text-dark);
+            overflow-x: hidden; /* Prevent horizontal scroll from animations */
+        }
+
+        h1, h2, h3, .serif-font {
+            font-family: 'Lora', serif;
+        }
+
+        .mandala-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            background-image: 
+                radial-gradient(circle at 100% 0%, rgba(255,126,0,0.08) 0%, transparent 40%),
+                radial-gradient(circle at 0% 100%, rgba(128,0,0,0.05) 0%, transparent 40%);
+            background-color: #fff9e6;
+        }
+        
+        .floating-flower {
+            position: fixed;
+            z-index: -1;
+            opacity: 0.15;
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.2; }
+            90% { opacity: 0.2; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
+        .flower-1 { left: 10%; animation-duration: 18s; animation-delay: 0s; width: 40px; height: 40px; }
+        .flower-2 { left: 30%; animation-duration: 22s; animation-delay: 5s; width: 60px; height: 60px; }
+        .flower-3 { left: 60%; animation-duration: 15s; animation-delay: 2s; width: 35px; height: 35px; }
+        .flower-4 { left: 85%; animation-duration: 25s; animation-delay: 8s; width: 50px; height: 50px; }
+        .flower-5 { left: 50%; animation-duration: 19s; animation-delay: 12s; width: 45px; height: 45px; }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, rgba(128,0,0,0.9), rgba(255,126,0,0.85)), url('https://images.unsplash.com/photo-1599818809419-48ce1c9e821d?q=80&w=2070&auto=format&fit=crop') center/cover;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 5px solid var(--gold);
+        }
+
+        .gold-text {
+            background: linear-gradient(to right, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .prize-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .prize-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(255, 126, 0, 0.2);
+        }
+
+        .prize-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 50%; height: 100%;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
+            transform: skewX(-25deg);
+            transition: 0.5s;
+        }
+
+        .prize-card:hover::before {
+            left: 125%;
+            transition: 0.7s;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 0.5rem;
+            background-color: #f8fafc;
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-orange);
+            box-shadow: 0 0 0 3px rgba(255, 126, 0, 0.2);
+            background-color: #fff;
+        }
+
+        .file-upload-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-upload-wrapper input[type=file] {
+            font-size: 100px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            cursor: pointer;
+            height: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--deep-maroon), var(--primary-orange));
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(45deg, var(--primary-orange), var(--deep-maroon));
+            z-index: -2;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 0%; height: 100%;
+            background-color: rgba(255,255,255,0.2);
+            transition: all 0.4s ease;
+            z-index: -1;
+        }
+
+        .btn-primary:hover::before {
+            width: 100%;
+        }
+
+        .pulse-soft {
+            animation: pulse-soft 2s infinite;
+        }
+        
+        @keyframes pulse-soft {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        #error-msg, #success-msg {
+            display: none;
+        }
+        
+        .image-preview-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .preview-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid var(--gold);
+        }
+    </style>
+</head>
+<body class="antialiased text-gray-800">
+
+    <!-- Animated Background Elements -->
+    <div class="mandala-bg"></div>
+    <svg class="floating-flower flower-1" viewBox="0 0 100 100" fill="#ff7e00"><path d="M50,0 C60,30 80,40 100,50 C80,60 60,70 50,100 C40,70 20,60 0,50 C20,40 40,30 50,0 Z"/></svg>
+    <svg class="floating-flower flower-2" viewBox="0 0 100 100" fill="#800000"><path d="M50,0 C60,30 80,40 100,50 C80,60 60,70 50,100 C40,70 20,60 0,50 C20,40 40,30 50,0 Z"/></svg>
+    <svg class="floating-flower flower-3" viewBox="0 0 100 100" fill="#FFD700"><path d="M50,0 C60,30 80,40 100,50 C80,60 60,70 50,100 C40,70 20,60 0,50 C20,40 40,30 50,0 Z"/></svg>
+    <svg class="floating-flower flower-4" viewBox="0 0 100 100" fill="#ff7e00"><path d="M50,0 C60,30 80,40 100,50 C80,60 60,70 50,100 C40,70 20,60 0,50 C20,40 40,30 50,0 Z"/></svg>
+    <svg class="floating-flower flower-5" viewBox="0 0 100 100" fill="#800000"><path d="M50,0 C60,30 80,40 100,50 C80,60 60,70 50,100 C40,70 20,60 0,50 C20,40 40,30 50,0 Z"/></svg>
+
+    <!-- Hero Section -->
+    <header class="hero-section py-20 px-4 text-center">
+        <div class="max-w-4xl mx-auto relative z-10">
+            <div class="animate__animated animate__fadeInDown">
+                <p class="text-gold font-semibold tracking-wider uppercase mb-2">Grand Festival Celebration 2026</p>
+                <h1 class="text-5xl md:text-7xl font-bold mb-6 text-white serif-font text-shadow">
+                    Maha Ganesha <br/> <span class="gold-text">Decoration Contest</span>
+                </h1>
+            </div>
+            
+            <div class="flex justify-center mb-8 animate__animated animate__zoomIn animate__delay-1s">
+                <!-- Using a beautiful, respectful illustration/photo of Ganesha -->
+                <div class="relative w-48 h-48 md:w-64 md:h-64 rounded-full border-4 border-yellow-400 p-2 bg-white shadow-2xl">
+                    <img src="https://sreeiyer.com/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fsreeiyer_new%2Ffiles%2Fsreeiyer_1676650618301_1.png&w=1080&q=10" 
+                         alt="Lord Ganesha" 
+                         class="w-full h-full object-cover rounded-full pulse-soft"
+                         onerror="this.src='https://placehold.co/400x400/800000/FFD700?text=Om+Ganeshay+Namah'">
+                    
+                    <!-- Decorative element around image -->
+                    <div class="absolute -inset-4 border-2 border-dashed border-yellow-300 rounded-full animate-spin" style="animation-duration: 20s;"></div>
+                </div>
+            </div>
+
+            <p class="text-xl md:text-2xl text-gray-100 mb-8 max-w-2xl mx-auto font-light animate__animated animate__fadeInUp animate__delay-1s">
+                Showcase your devotion and creativity! Join our community in celebrating the spirit of Ganesh Chaturthi through magnificent pandal and idol decorations.
+            </p>
+            
+            <a href="#register" class="inline-block btn-primary px-8 py-4 rounded-full text-lg shadow-lg animate__animated animate__bounceIn animate__delay-2s">
+                <i class="fas fa-om mr-2"></i> Register Now
+            </a>
+        </div>
+        
+        <!-- Bottom wave decoration -->
+        <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-none z-0">
+            <svg class="relative block w-full h-12 md:h-24" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.8C59.71,118.08,130.83,119.29,201.33,110.5,246.3,105.15,285.8,88.4,321.39,56.44Z" fill="#fffdd0"></path>
+            </svg>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-6xl mx-auto px-4 py-12">
+        
+        <!-- Info Cards Section -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+            
+            <!-- Competition Details -->
+            <div class="glass-panel p-8 rounded-2xl animate__animated animate__fadeInLeft hover:shadow-xl transition-shadow">
+                <div class="flex items-center mb-6">
+                    <div class="w-12 h-12 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center text-2xl mr-4">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-maroon-800">Event Details</h2>
+                </div>
+                
+                <ul class="space-y-4 text-gray-700">
+                    <li class="flex items-start">
+                        <i class="fas fa-clock mt-1 text-orange-500 w-6"></i>
+                        <div>
+                            <span class="font-semibold block">Last Date to Submit:</span>
+                            <span class="text-red-600 font-bold bg-red-100 px-2 py-1 rounded">September 25th, 2026</span>
+                        </div>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-ticket-alt mt-1 text-orange-500 w-6"></i>
+                        <div>
+                            <span class="font-semibold block">Entry Fee:</span>
+                            <span class="text-xl font-bold text-green-700">₹89/-</span>
+                        </div>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-camera mt-1 text-orange-500 w-6"></i>
+                        <div>
+                            <span class="font-semibold block">Requirements:</span>
+                            Submit exactly 1 High Definition (HD) image of your decoration.
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- AI Warning Box -->
+            <div class="glass-panel p-8 rounded-2xl border-l-4 border-l-red-500 animate__animated animate__fadeInRight bg-red-50/50">
+                <div class="flex items-center mb-4 text-red-700">
+                    <i class="fas fa-exclamation-triangle text-3xl mr-3 pulse-soft"></i>
+                    <h2 class="text-2xl font-bold">Strict Rule: No AI Images</h2>
+                </div>
+                <p class="text-gray-800 mb-4 leading-relaxed">
+                    This competition celebrates authentic, physical decorations created by devotees. <strong>AI-generated images are strictly prohibited.</strong>
+                </p>
+                <div class="bg-white p-4 rounded-lg shadow-sm border border-red-200">
+                    <ul class="list-disc pl-5 text-sm text-gray-700 space-y-2">
+                        <li>All submissions will undergo rigorous verification using advanced AI-detection tools.</li>
+                        <li>Manual review by our expert panel will confirm authenticity.</li>
+                        <li>Any entry found using AI generation will be <strong>immediately disqualified</strong> without refund.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Prizes Section -->
+        <div class="text-center mb-12">
+            <h2 class="text-4xl font-bold mb-4 serif-font">Exciting Prizes</h2>
+            <div class="w-24 h-1 bg-gradient-to-r from-orange-400 to-red-600 mx-auto rounded-full"></div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+            <!-- 2nd Prize -->
+            <div class="prize-card glass-panel p-6 rounded-2xl text-center md:mt-8 border-t-4 border-gray-300">
+                <div class="w-16 h-16 mx-auto bg-gray-100 rounded-full flex items-center justify-center mb-4 shadow-inner">
+                    <i class="fas fa-medal text-3xl text-gray-400"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-600 mb-2">2nd Prize</h3>
+                <div class="text-3xl font-extrabold text-gray-800">₹2000/-</div>
+            </div>
+
+            <!-- 1st Prize -->
+            <div class="prize-card glass-panel p-8 rounded-2xl text-center bg-gradient-to-b from-yellow-50 to-white border border-yellow-300 shadow-xl transform scale-105 z-10">
+                <div class="w-20 h-20 mx-auto bg-yellow-100 rounded-full flex items-center justify-center mb-4 shadow-inner border-2 border-yellow-400 pulse-soft">
+                    <i class="fas fa-trophy text-4xl text-yellow-500"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-yellow-600 mb-2 serif-font">1st Prize</h3>
+                <div class="text-4xl font-extrabold text-gray-900 mb-2">₹3000/-</div>
+                <span class="text-xs uppercase font-bold tracking-wider text-yellow-600 bg-yellow-100 px-3 py-1 rounded-full">Grand Winner</span>
+            </div>
+
+            <!-- 3rd Prize -->
+            <div class="prize-card glass-panel p-6 rounded-2xl text-center md:mt-8 border-t-4 border-amber-600">
+                <div class="w-16 h-16 mx-auto bg-amber-50 rounded-full flex items-center justify-center mb-4 shadow-inner">
+                    <i class="fas fa-award text-3xl text-amber-700"></i>
+                </div>
+                <h3 class="text-xl font-bold text-amber-800 mb-2">3rd Prize</h3>
+                <div class="text-3xl font-extrabold text-gray-800">₹1000/-</div>
+            </div>
+        </div>
+        
+        <div class="text-center mb-16 animate__animated animate__fadeIn">
+            <span class="inline-block bg-orange-100 text-orange-800 px-6 py-2 rounded-full font-medium border border-orange-200 shadow-sm">
+                <i class="fas fa-star text-orange-500 mr-2"></i> Honorable Mentions & E-Certificates for top 10 entries!
+            </span>
+        </div>
+
+        <!-- Registration Form -->
+        <div id="register" class="max-w-3xl mx-auto glass-panel p-8 md:p-12 rounded-3xl shadow-2xl relative overflow-hidden">
+            <!-- Decorative corner elements -->
+            <div class="absolute top-0 left-0 w-16 h-16 bg-gradient-to-br from-orange-400 to-transparent opacity-50 rounded-br-full"></div>
+            <div class="absolute bottom-0 right-0 w-16 h-16 bg-gradient-to-tl from-red-600 to-transparent opacity-50 rounded-tl-full"></div>
+
+            <div class="text-center mb-8 relative z-10">
+                <h2 class="text-3xl font-bold text-gray-800 serif-font mb-2">Submit Your Entry</h2>
+                <p class="text-gray-600">Fill in details and upload your beautiful decoration photos.</p>
+            </div>
+
+            <!-- Form Validation Messages -->
+            <div id="error-msg" class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded shadow-sm" role="alert">
+                <p class="font-bold">Wait a moment!</p>
+                <p id="error-text">Please fill out all fields correctly.</p>
+            </div>
+            
+            <div id="success-msg" class="bg-green-100 border-l-4 border-green-500 text-green-700 p-6 mb-6 rounded shadow-sm text-center" role="alert">
+                <i class="fas fa-check-circle text-4xl mb-2"></i>
+                <p id="success-heading" class="font-bold text-lg">Registration Successful!</p>
+                <p id="success-detail">May Lord Ganesha bless you. Your entry has been received.</p>
+            </div>
+
+            <!-- Payment panel: shown after a successful submission.
+                 The Razorpay Payment Button inside only becomes visible then. -->
+            <div id="payment-msg" class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 p-6 mb-6 rounded shadow-sm text-center" role="alert" style="display:none;">
+                <i class="fas fa-hourglass-half text-4xl mb-2"></i>
+                <p class="font-bold text-lg">Entry Received — Payment Pending</p>
+                <p class="mb-4">Your entry is saved, but the ₹89 entry fee is still due. Complete the payment below to confirm your participation.</p>
+                <!-- Razorpay Payment Button (created from the Razorpay Dashboard) -->
+                <form><script src="https://checkout.razorpay.com/v1/payment-button.js" data-payment_button_id="pl_Tcd0dKofTlgeMS" async> </script> </form>
+            </div>
+
+            <!-- Form Element -->
+            <form id="competition-form" class="space-y-6 relative z-10" onsubmit="handleFormSubmit(event)">
+                
+                <!-- Personal Details Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="fullName" class="block text-sm font-semibold text-gray-700 mb-2">Full Name *</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                                <i class="fas fa-user"></i>
+                            </span>
+                            <input type="text" id="fullName" name="fullName" required class="form-input pl-10" placeholder="e.g. Ramesh Kumar">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label for="phone" class="block text-sm font-semibold text-gray-700 mb-2">Phone Number *</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                                <i class="fas fa-phone-alt"></i>
+                            </span>
+                            <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" required title="Please enter a 10 digit mobile number" class="form-input pl-10" placeholder="10-digit mobile number">
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">Email Address *</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                            <i class="fas fa-envelope"></i>
+                        </span>
+                        <input type="email" id="email" name="email" required class="form-input pl-10" placeholder="your.email@example.com">
+                    </div>
+                </div>
+
+                <!-- Image Upload Section -->
+                <div class="bg-orange-50 p-6 rounded-xl border border-orange-200">
+                    <label class="block text-sm font-semibold text-gray-800 mb-2">
+                        Upload 1 HD Image (Single Photo) *
+                    </label>
+                    <p class="text-xs text-gray-600 mb-4">Allowed formats: JPG, PNG. Max size: 10MB. Image must be HD (minimum 1280×720 pixels).</p>
+
+                    <div class="file-upload-wrapper bg-white border-2 border-dashed border-orange-300 rounded-lg p-8 text-center hover:bg-orange-50 transition-colors">
+                        <i class="fas fa-cloud-upload-alt text-4xl text-orange-400 mb-3"></i>
+                        <p class="text-gray-700 font-medium">Drag & drop your HD image here or <span class="text-orange-600 underline">browse</span></p>
+                        <input type="file" id="images" name="images" accept="image/jpeg, image/png" required onchange="previewImages()">
+                    </div>
+                    
+                    <!-- Preview Container -->
+                    <div id="image-preview" class="image-preview-container mt-4 hidden">
+                        <!-- Previews injected via JS -->
+                    </div>
+                </div>
+
+                <!-- Checkboxes / Agreements -->
+                <div class="space-y-3">
+                    <label class="flex items-start">
+                        <input type="checkbox" id="ai-confirm" required class="mt-1 mr-3 h-5 w-5 text-orange-600 focus:ring-orange-500 border-gray-300 rounded">
+                        <span class="text-sm text-gray-700">
+                            I declare that the images submitted are genuine photographs of my physical decoration and <strong>NOT generated by AI</strong>. I understand AI entries will be disqualified. *
+                        </span>
+                    </label>
+                    <label class="flex items-start">
+                        <input type="checkbox" id="fee-confirm" required class="mt-1 mr-3 h-5 w-5 text-orange-600 focus:ring-orange-500 border-gray-300 rounded">
+                        <span class="text-sm text-gray-700">
+                            I agree to pay the non-refundable entry fee of ₹89 upon successful initial verification of my submission. *
+                        </span>
+                    </label>
+                </div>
+
+                <button type="submit" id="submit-btn" class="w-full btn-primary py-4 rounded-xl text-xl mt-6 shadow-md hover:shadow-lg flex justify-center items-center">
+                    <span>Submit Entry</span>
+                    <i class="fas fa-paper-plane ml-2"></i>
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-300 py-8 border-t-4 border-orange-500">
+        <div class="max-w-6xl mx-auto px-4 text-center">
+            <h3 class="text-2xl font-bold text-white mb-4 serif-font text-orange-400">Om Ganapataye Namah</h3>
+            <p class="mb-4 text-sm">For queries regarding the competition, please contact:</p>
+            <div class="flex justify-center mb-6">
+                <a href="tel:+918519974995" class="hover:text-white transition-colors text-lg font-semibold">
+                    <i class="fas fa-phone mr-2 text-orange-400"></i>Gowtham — 8519974995
+                </a>
+            </div>
+            <p class="text-xs text-gray-500">&copy; 2026 Ganesha Decoration Competition. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        /**
+         * Backend endpoint that receives the form (name, phone, email, image).
+         * Set this to your Google Apps Script Web App URL — see apps-script/SETUP.md.
+         * Leave as '' to keep the local demo behaviour (no upload happens).
+         */
+        const SUBMIT_ENDPOINT = 'https://script.google.com/macros/s/AKfycbz-DANOr1wheQsqLflFbMBkXYlS_w16RENbyuxl5nNuJQHTsUvS1wRZZu15wlzDnUwQ/exec';
+
+        /**
+         * Reads a file into a data URL ("data:image/jpeg;base64,...").
+         * @param {File} file
+         * @returns {Promise<string>}
+         */
+        function readFileAsDataURL(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = () => reject(new Error('Could not read the selected image.'));
+                reader.readAsDataURL(file);
+            });
+        }
+
+        /**
+         * Checks that the selected image is HD (at least 1280x720 pixels).
+         * @param {File} file - The image file to check
+         * @returns {Promise<{ok: boolean, message: string}>}
+         */
+        function checkImageIsHD(file) {
+            return new Promise((resolve) => {
+                const url = URL.createObjectURL(file);
+                const img = new Image();
+                img.onload = function() {
+                    URL.revokeObjectURL(url);
+                    const isHD = img.naturalWidth >= 1280 && img.naturalHeight >= 720;
+                    resolve({
+                        ok: isHD,
+                        message: isHD
+                            ? `Looks great! ${img.naturalWidth}×${img.naturalHeight}px`
+                            : `Image resolution is ${img.naturalWidth}×${img.naturalHeight}px. An HD image (minimum 1280×720) is required.`
+                    });
+                };
+                img.onerror = function() {
+                    URL.revokeObjectURL(url);
+                    resolve({ ok: false, message: `Could not read "${file.name}". Please upload a valid JPG or PNG image.` });
+                };
+                img.src = url;
+            });
+        }
+
+        /**
+         * Handles the image selection: validates a single HD image and shows a preview.
+         */
+        async function previewImages() {
+            const preview = document.getElementById('image-preview');
+            const fileInput = document.getElementById('images');
+            const errorMsg = document.getElementById('error-msg');
+            const errorText = document.getElementById('error-text');
+
+            preview.innerHTML = ''; // Clear previous preview
+            errorMsg.style.display = 'none';
+            preview.classList.add('hidden');
+
+            if (!fileInput.files || fileInput.files.length === 0) return;
+
+            const file = fileInput.files[0]; // Exactly one file — input no longer allows multiple
+
+            // Size validation (10MB max — phone HD photos are often larger than 5MB)
+            if (file.size > 10 * 1024 * 1024) {
+                errorText.textContent = `File "${file.name}" is too large. Max size is 10MB.`;
+                errorMsg.style.display = 'block';
+                fileInput.value = ''; // Reject the file so the user must re-pick
+                return;
+            }
+
+            // Resolution validation (must be HD)
+            const check = await checkImageIsHD(file);
+            if (!check.ok) {
+                errorText.textContent = check.message;
+                errorMsg.style.display = 'block';
+                errorMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                fileInput.value = ''; // Reject the file so the user must re-pick
+                return;
+            }
+
+            // Show preview + resolution confirmation
+            preview.classList.remove('hidden');
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.classList.add('preview-image', 'animate__animated', 'animate__zoomIn');
+                img.title = `${file.name} — ${check.message}`;
+
+                const caption = document.createElement('p');
+                caption.className = 'text-xs text-green-700 font-semibold w-full';
+                caption.innerHTML = `<i class="fas fa-check-circle mr-1"></i>${file.name} — ${check.message}`;
+
+                preview.appendChild(img);
+                preview.appendChild(caption);
+            }
+            reader.readAsDataURL(file);
+        }
+
+        /**
+         * Handles the main form submission process.
+         * Sends the form data (including the image) to the backend endpoint
+         * defined by SUBMIT_ENDPOINT below. If no endpoint is configured yet,
+         * it falls back to the local-only demo behaviour.
+         * @param {Event} e - The form submit event
+         */
+        async function handleFormSubmit(e) {
+            e.preventDefault();
+
+            const fileInput = document.getElementById('images');
+            const errorMsg = document.getElementById('error-msg');
+            const errorText = document.getElementById('error-text');
+            const successMsg = document.getElementById('success-msg');
+            const form = document.getElementById('competition-form');
+            const submitBtn = document.getElementById('submit-btn');
+
+            // Final validation before submitting
+            if (!fileInput.files || fileInput.files.length !== 1) {
+                errorText.textContent = "You must upload exactly 1 HD image to participate.";
+                errorMsg.style.display = 'block';
+                return;
+            }
+
+            // Hide errors if validation passes
+            errorMsg.style.display = 'none';
+
+            // UI feedback while uploading
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Uploading...';
+            submitBtn.classList.add('opacity-75', 'cursor-not-allowed');
+            submitBtn.disabled = true;
+
+            try {
+                if (SUBMIT_ENDPOINT) {
+                    // Real submission: send the entry + image (as base64) to the
+                    // Google Apps Script web app that saves it to Google Drive.
+                    // The 'text/plain' content type keeps this a "simple request",
+                    // so the browser skips the CORS preflight Apps Script can't answer.
+                    const file = fileInput.files[0];
+                    const dataUrl = await readFileAsDataURL(file);
+                    const payload = {
+                        name: document.getElementById('fullName').value.trim(),
+                        phone: document.getElementById('phone').value.trim(),
+                        email: document.getElementById('email').value.trim(),
+                        fileName: file.name,
+                        mimeType: file.type,
+                        imageBase64: dataUrl.split(',')[1] // strip the "data:...;base64," prefix
+                    };
+                    const response = await fetch(SUBMIT_ENDPOINT, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                        body: JSON.stringify(payload)
+                    });
+                    const result = await response.json();
+                    if (!result.ok) {
+                        throw new Error(result.error || 'The server rejected the entry.');
+                    }
+                } else {
+                    // No backend configured yet — simulate the upload delay
+                    await new Promise(resolve => setTimeout(resolve, 1500));
+                }
+
+                // Entry saved. Hide the form and show the payment step —
+                // the Razorpay Payment Button lives in the payment panel.
+                form.style.display = 'none';
+
+                if (SUBMIT_ENDPOINT) {
+                    showPaymentPending();
+                } else {
+                    // Demo mode (no backend configured yet)
+                    showSuccess();
+                }
+            } catch (err) {
+                // Restore the form so the user can retry
+                submitBtn.innerHTML = '<span>Submit Entry</span><i class="fas fa-paper-plane ml-2"></i>';
+                submitBtn.classList.remove('opacity-75', 'cursor-not-allowed');
+                submitBtn.disabled = false;
+                errorText.textContent = "Upload failed — " + (err && err.message ? err.message : "please check your internet connection and try again.");
+                errorMsg.style.display = 'block';
+            }
+        }
+
+        /**
+         * Shows the green success panel. Both arguments are optional — used to
+         * override the heading/message when returning from a successful payment.
+         */
+        function showSuccess(heading, message) {
+            document.getElementById('payment-msg').style.display = 'none';
+            if (heading) {
+                document.getElementById('success-heading').textContent = heading;
+            }
+            if (message) {
+                document.getElementById('success-detail').textContent = message;
+            }
+            const successMsg = document.getElementById('success-msg');
+            successMsg.style.display = 'block';
+            successMsg.classList.add('animate__animated', 'animate__tada');
+            document.getElementById('register').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        /** Shows the yellow "payment pending" panel with the Razorpay Payment Button. */
+        function showPaymentPending() {
+            document.getElementById('success-msg').style.display = 'none';
+            document.getElementById('payment-msg').style.display = 'block';
+            document.getElementById('register').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        /** Shows the red error panel. */
+        function showError(message) {
+            const errorMsg = document.getElementById('error-msg');
+            document.getElementById('error-text').textContent = message;
+            errorMsg.style.display = 'block';
+        }
+
+        /**
+         * Runs on page load. If the page was opened back from Razorpay after a
+         * successful payment (via the Payment Button's Redirect URL, which
+         * should be set to "...?payment=success"), skip the form and show the
+         * payment-confirmed state instead of the stale "payment pending" panel.
+         */
+        (function handlePaymentReturn() {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('payment') !== 'success') return;
+
+            document.getElementById('competition-form').style.display = 'none';
+            showSuccess(
+                'Payment Successful! 🙏',
+                'Your ₹89 entry fee is received and your Ganesha Decoration Competition 2026 entry is confirmed. May Lord Ganesha bless you!'
+            );
+
+            // Remove the flag from the address bar so a refresh, or someone
+            // re-opening a shared link, sees the normal entry form again.
+            window.history.replaceState(null, '', window.location.pathname + window.location.hash);
+        })();
+    </script>
+</body>
+</html>
