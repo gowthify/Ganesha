@@ -436,7 +436,7 @@
                     <label class="block text-sm font-semibold text-gray-800 mb-2">
                         Upload 1 HD Image (Single Photo) *
                     </label>
-                    <p class="text-xs text-gray-600 mb-4">Allowed formats: JPG, PNG. Max size: 10MB. Image must be HD (minimum 1280×720 pixels).</p>
+                    <p class="text-xs text-gray-600 mb-4">Allowed formats: JPG, PNG. Max size: 10MB. Image must be HD (minimum 1280×720 pixels). Large photos are automatically optimized so they upload quickly.</p>
 
                     <div class="file-upload-wrapper bg-white border-2 border-dashed border-orange-300 rounded-lg p-8 text-center hover:bg-orange-50 transition-colors">
                         <i class="fas fa-cloud-upload-alt text-4xl text-orange-400 mb-3"></i>
@@ -509,6 +509,50 @@
                 reader.onerror = () => reject(new Error('Could not read the selected image.'));
                 reader.readAsDataURL(file);
             });
+        }
+
+        /**
+         * Prepares the selected photo for upload. Phone photos are often 5-10MB,
+         * which becomes a ~14MB request after base64 — slow and fragile on mobile
+         * data (stalled uploads make proxies return HTML instead of JSON). So any
+         * photo above 1MB is downscaled to at most 1920px on its long edge and
+         * re-encoded as quality-85 JPEG — typically 300-700KB, still comfortably
+         * HD (well above the 1280x720 minimum). Small files are sent as-is.
+         * @param {File} file
+         * @returns {Promise<{dataUrl: string, fileName: string, mimeType: string}>}
+         */
+        async function prepareImageForUpload(file) {
+            const THRESHOLD_BYTES = 1024 * 1024; // compress only above 1MB
+            const MAX_EDGE = 1920;               // long-edge cap — above HD minimum
+            const JPEG_QUALITY = 0.85;
+
+            if (file.size <= THRESHOLD_BYTES) {
+                return { dataUrl: await readFileAsDataURL(file), fileName: file.name, mimeType: file.type };
+            }
+
+            const dataUrl = await readFileAsDataURL(file);
+            const img = await new Promise((resolve, reject) => {
+                const image = new Image();
+                image.onload = () => resolve(image);
+                image.onerror = () => reject(new Error('Could not process the selected image.'));
+                image.src = dataUrl;
+            });
+
+            const scale = Math.min(1, MAX_EDGE / Math.max(img.naturalWidth, img.naturalHeight));
+            const width = Math.round(img.naturalWidth * scale);
+            const height = Math.round(img.naturalHeight * scale);
+
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+
+            const baseName = file.name.replace(/\.[^.]+$/, '') || 'entry';
+            return {
+                dataUrl: canvas.toDataURL('image/jpeg', JPEG_QUALITY),
+                fileName: baseName + '_hd.jpg',
+                mimeType: 'image/jpeg'
+            };
         }
 
         /**
@@ -631,21 +675,36 @@
                     // The 'text/plain' content type keeps this a "simple request",
                     // so the browser skips the CORS preflight Apps Script can't answer.
                     const file = fileInput.files[0];
-                    const dataUrl = await readFileAsDataURL(file);
+                    // Large photos are optimized in the browser before upload
+                    // (downscaled to ≤1920px, re-encoded as JPEG) so the request
+                    // stays small and reliable on mobile data.
+                    const prepared = await prepareImageForUpload(file);
                     const payload = {
                         name: document.getElementById('fullName').value.trim(),
                         phone: document.getElementById('phone').value.trim(),
                         email: document.getElementById('email').value.trim(),
-                        fileName: file.name,
-                        mimeType: file.type,
-                        imageBase64: dataUrl.split(',')[1] // strip the "data:...;base64," prefix
+                        fileName: prepared.fileName,
+                        mimeType: prepared.mimeType,
+                        imageBase64: prepared.dataUrl.split(',')[1] // strip the "data:...;base64," prefix
                     };
                     const response = await fetch(SUBMIT_ENDPOINT, {
                         method: 'POST',
                         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                         body: JSON.stringify(payload)
                     });
-                    const result = await response.json();
+                    // Read as text first, so an HTML/proxy error page produces a
+                    // helpful message instead of "Unexpected token '<'".
+                    const rawText = await response.text();
+                    let result;
+                    try {
+                        result = JSON.parse(rawText);
+                    } catch (parseError) {
+                        throw new Error(
+                            'the server returned an unexpected response (HTTP ' + response.status + '). ' +
+                            'Your entry may still have been received — please contact Gowtham at 8519974995 ' +
+                            'before submitting again.'
+                        );
+                    }
                     if (!result.ok) {
                         throw new Error(result.error || 'The server rejected the entry.');
                     }
